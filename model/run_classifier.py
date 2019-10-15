@@ -5,10 +5,10 @@ from threading import Thread
 import pandas as pd
 import tensorflow as tf
 import collections
-import args
-import tokenization
-import modeling
-import optimization
+from model import args
+from model import tokenization
+from model import modeling
+from model import optimization
 
 
 # os.environ['CUDA_VISIBLE_DEVICES'] = '1'
@@ -151,6 +151,7 @@ class BertSim:
         # If you want to use the token-level output, use model.get_sequence_output()
         # instead.
         output_layer = model.get_pooled_output()
+        print('output_layer: {}',output_layer.shape)
 
         hidden_size = output_layer.shape[-1].value
 
@@ -197,7 +198,7 @@ class BertSim:
 
             is_training = (mode == tf.estimator.ModeKeys.TRAIN)
 
-            (total_loss, per_example_loss, logits, probabilities) = BertSim.create_model(
+            (total_loss, per_example_loss, logits, probabilities) = self.create_model(
                 bert_config, is_training, input_ids, input_mask, segment_ids, label_ids,
                 num_labels, use_one_hot_embeddings)
 
